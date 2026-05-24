@@ -14,7 +14,7 @@ substitutions:
 
   i2c_scl: GPIO5  # D1
   i2c_sda: GPIO4  # D2
-  i2c_scan: false
+  i2c_scan: true
   i2c_address: 0x2C
 
   # Set these only if you have connected two QMC5883L to one device, see esphome-two-meters.yaml
