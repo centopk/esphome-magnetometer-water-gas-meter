@@ -62,6 +62,26 @@ esphome:
   on_boot:
     then:
       - lambda: App.set_loop_interval(0);
+      - i2c.write:
+          id: ${prefix_id}i2c_bus
+          address: !lambda "return ${i2c_address};"
+          data: [0x0D, 0x80]
+      - delay: 100ms
+      - i2c.write:
+          id: ${prefix_id}i2c_bus
+          address: !lambda "return ${i2c_address};"
+          data: [0x0A, 0x01]
+      - delay: 50ms
+      - i2c.write:
+          id: ${prefix_id}i2c_bus
+          address: !lambda "return ${i2c_address};"
+          data: [0x0B, 0x1D]
+      - delay: 50ms
+      - i2c.write:
+          id: ${prefix_id}i2c_bus
+          address: !lambda "return ${i2c_address};"
+          data: [0x0C, 0x00]
+      - delay: 100ms
 
 logger:
   level: INFO
