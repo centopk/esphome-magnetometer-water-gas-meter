@@ -60,28 +60,19 @@ esphome:
   # Without setting this, the actual update interval of qmc5883l is: 6ms on ESP32, 10ms on ESP8266.
   # With this, it's 5ms on ESP32, 8ms on ESP8266.
   on_boot:
+    priority: 600
     then:
-      - lambda: App.set_loop_interval(0);
-      - i2c.write:
-          id: ${prefix_id}i2c_bus
-          address: !lambda "return ${i2c_address};"
-          data: [0x0D, 0x80]
-      - delay: 100ms
-      - i2c.write:
-          id: ${prefix_id}i2c_bus
-          address: !lambda "return ${i2c_address};"
-          data: [0x0A, 0x01]
-      - delay: 50ms
-      - i2c.write:
-          id: ${prefix_id}i2c_bus
-          address: !lambda "return ${i2c_address};"
-          data: [0x0B, 0x1D]
-      - delay: 50ms
-      - i2c.write:
-          id: ${prefix_id}i2c_bus
-          address: !lambda "return ${i2c_address};"
-          data: [0x0C, 0x00]
-      - delay: 100ms
+      - lambda: |-
+          App.set_loop_interval(0);
+          // QMC5883L init via ESPHome i2c
+          id(${prefix_id}qmc5883l_id).write_byte(0x0D, 0x80);
+          delay(100);
+          id(${prefix_id}qmc5883l_id).write_byte(0x0A, 0x01);
+          delay(50);
+          id(${prefix_id}qmc5883l_id).write_byte(0x0B, 0x1D);
+          delay(50);
+          id(${prefix_id}qmc5883l_id).write_byte(0x0C, 0x00);
+          delay(100);
 
 logger:
   level: INFO
